@@ -1,0 +1,18 @@
+## Build 
+**/bin/
+**/obj/
+**/.vs/
+*.user
+*.suo
+
+## secrets / env
+**/appsettings.Development.json
+**/*.env
+**/secrets.json
+
+## cursor
+**/*.cursor
+
+#os
+.DB_Store
+Thumbs.db
