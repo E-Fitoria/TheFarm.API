@@ -65,6 +65,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddAuthorization();
 
+// activa cors en DI para permitir solicitudes desde el frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Front", policy =>
+        policy.WithOrigins(
+                "http://localhost:5173",
+                "http://localhost:3000",
+                "http://localhost:4200"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -78,9 +91,16 @@ if (!app.Environment.IsDevelopment())
     app.UseHttpsRedirection();
 }
 
-// ORDEN IMPORTANTE
+// Ordenes importantes para la seguridad y el funcionamiento de la API
+app.UseCors("Front"); // permite solicitudes desde el frontend
 app.UseAuthentication(); // lee el Bearer y llena HttpContext.User
 app.UseAuthorization();  // aplica [Authorize]
 app.MapControllers();
+
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(port))
+{
+    app.Urls.Add($"http://0.0.0.0:{port}");
+}
 
 app.Run();
