@@ -11,9 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
+// Servicios de la API
 builder.Services.AddScoped<PointSaleService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<ProductService>();
 
 // Configuración de Swagger
 builder.Services.AddSwaggerGen(c =>
