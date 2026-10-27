@@ -24,8 +24,7 @@ public class ProductService
         CategoryName = p.Category?.Name,
         SalePrice = p.SalePrice,
         DoseSalePrice = p.DoseSalePrice,
-        ServicesNumber = p.ServicesNumber,
-        Status = p.Status
+        ServicesNumber = p.ServicesNumber
     };
 
     public async Task<List<ProductResponse>> GetAllAsync()
@@ -67,12 +66,20 @@ public class ProductService
             IdCategory = request.IdCategory,
             SalePrice = request.SalePrice,
             DoseSalePrice = request.AllowsDoseSale ? request.DoseSalePrice : 0,
-            ServicesNumber = request.ServicesNumber,
-            Status = "Active"
+            ServicesNumber = request.ServicesNumber
         };
 
         _db.Products.Add(entity);
+
+        // #region agent log
+        try { System.IO.File.AppendAllText(@"c:\proyectos-uni\the-farm\debug-94471a.log", System.Text.Json.JsonSerializer.Serialize(new { sessionId = "94471a", runId = "post-fix", hypothesisId = "H1", location = "ProductService.CreateAsync:beforeSave", message = "Saving Product without Status", data = new { entity.Name, entity.IdCategory, entity.ServicesNumber }, timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }) + "\n"); } catch { }
+        // #endregion
+
         await _db.SaveChangesAsync();
+
+        // #region agent log
+        try { System.IO.File.AppendAllText(@"c:\proyectos-uni\the-farm\debug-94471a.log", System.Text.Json.JsonSerializer.Serialize(new { sessionId = "94471a", runId = "post-fix", hypothesisId = "H1", location = "ProductService.CreateAsync:afterSave", message = "Product saved OK", data = new { entity.IdProduct }, timestamp = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() }) + "\n"); } catch { }
+        // #endregion
 
         var created = await _db.Products
             .AsNoTracking()
@@ -103,9 +110,6 @@ public class ProductService
         entity.SalePrice = request.SalePrice;
         entity.DoseSalePrice = request.AllowsDoseSale ? request.DoseSalePrice : 0;
         entity.ServicesNumber = request.ServicesNumber;
-        entity.Status = string.IsNullOrWhiteSpace(request.Status)
-            ? entity.Status
-            : request.Status.Trim();
 
         await _db.SaveChangesAsync();
 

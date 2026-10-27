@@ -11,5 +11,4 @@ public class ProductResponse
     public decimal? SalePrice { get; set; }
     public decimal DoseSalePrice { get; set; }
     public int ServicesNumber { get; set; }
-    public string Status { get; set; } = string.Empty;
 }

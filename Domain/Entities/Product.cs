@@ -10,7 +10,6 @@ public class Product
     public decimal SalePrice {get; set;}
     public decimal DoseSalePrice {get; set;}
     public int ServicesNumber {get; set;}
-    public string Status {get; set;} = string.Empty;
 
     // propiedad de navegacion para la relacion con la tabla Category
     public Category? Category {get; set;}
