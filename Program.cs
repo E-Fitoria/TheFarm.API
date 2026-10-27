@@ -18,6 +18,7 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<ProductService>();
 builder.Services.AddScoped<InventoryService>();
 builder.Services.AddScoped<InventoryTransferService>();
+builder.Services.AddScoped<SaleService>();
 
 // Configuración de Swagger
 builder.Services.AddSwaggerGen(c =>
